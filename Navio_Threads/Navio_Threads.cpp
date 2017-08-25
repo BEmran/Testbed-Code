@@ -62,7 +62,7 @@ void *conThread(void *data)
             dtsumm += dt;
             if (dtsumm > 1){
                 dtsumm = 0;
-                printf("control thread with frequency %d\n", 1/dt);
+                printf("control thread with frequency %f\n", 1/dt);
             }
 	}
 	// Exit procedure
@@ -87,7 +87,7 @@ void *senThread(void *data)
             dtsumm += dt;
             if (dtsumm > 1){
                 dtsumm = 0;
-                printf("sensor thread with frequency %d\n", 1/dt);
+                printf("sensor thread with frequency %f\n", 1/dt);
             }
 	}
 	// Exit procedure
@@ -112,7 +112,7 @@ void *tcpThread(void *data)
             dtsumm += dt;
             if (dtsumm > 1){
                 dtsumm = 0;
-                printf("tcp thread with frequency %d\n", 1/dt);
+                printf("tcp thread with frequency %f\n", 1/dt);
             }
 	}
 	// Exit procedure
