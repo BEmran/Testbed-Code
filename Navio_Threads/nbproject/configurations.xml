@@ -14,6 +14,40 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <logicalFolder name="Navio" displayName="Navio" projectFiles="true">
+        <itemPath>../Navio/ADC.cpp</itemPath>
+        <itemPath>../Navio/ADC.h</itemPath>
+        <itemPath>../Navio/ADS1115.cpp</itemPath>
+        <itemPath>../Navio/ADS1115.h</itemPath>
+        <itemPath>../Navio/I2Cdev.cpp</itemPath>
+        <itemPath>../Navio/I2Cdev.h</itemPath>
+        <itemPath>../Navio/InertialSensor.h</itemPath>
+        <itemPath>../Navio/LSM9DS1.cpp</itemPath>
+        <itemPath>../Navio/LSM9DS1.h</itemPath>
+        <itemPath>../Navio/MB85RC04.cpp</itemPath>
+        <itemPath>../Navio/MB85RC04.h</itemPath>
+        <itemPath>../Navio/MB85RC256.cpp</itemPath>
+        <itemPath>../Navio/MB85RC256.h</itemPath>
+        <itemPath>../Navio/MPU9250.cpp</itemPath>
+        <itemPath>../Navio/MPU9250.h</itemPath>
+        <itemPath>../Navio/MS5611.cpp</itemPath>
+        <itemPath>../Navio/MS5611.h</itemPath>
+        <itemPath>../Navio/PCA9685.cpp</itemPath>
+        <itemPath>../Navio/PCA9685.h</itemPath>
+        <itemPath>../Navio/PWM.cpp</itemPath>
+        <itemPath>../Navio/PWM.h</itemPath>
+        <itemPath>../Navio/RCInput.cpp</itemPath>
+        <itemPath>../Navio/RCInput.h</itemPath>
+        <itemPath>../Navio/RGBled.cpp</itemPath>
+        <itemPath>../Navio/RGBled.h</itemPath>
+        <itemPath>../Navio/SPIdev.h</itemPath>
+        <itemPath>../Navio/Ublox.cpp</itemPath>
+        <itemPath>../Navio/Ublox.h</itemPath>
+        <itemPath>../Navio/Util.cpp</itemPath>
+        <itemPath>../Navio/Util.h</itemPath>
+        <itemPath>../Navio/gpio.cpp</itemPath>
+        <itemPath>../Navio/gpio.h</itemPath>
+      </logicalFolder>
       <itemPath>Navio_Threads.cpp</itemPath>
       <itemPath>/home/emran/ws/git_ws/Testbed-Code/Navio_Threads/include/SamplingTime.cpp</itemPath>
     </logicalFolder>
@@ -31,6 +65,7 @@
   </logicalFolder>
   <sourceRootList>
     <Elem>/home/emran/ws/git_ws/Testbed-Code/Navio_Threads/include</Elem>
+    <Elem>../Navio</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -44,17 +79,83 @@
         <cTool>
           <incDir>
             <pElem>include</pElem>
+            <pElem>../Navio</pElem>
           </incDir>
         </cTool>
         <ccTool>
           <incDir>
             <pElem>include</pElem>
+            <pElem>../Navio</pElem>
           </incDir>
         </ccTool>
         <linkerTool>
           <commandLine>-lpthread</commandLine>
         </linkerTool>
       </compileType>
+      <item path="../Navio/ADC.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../Navio/ADC.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../Navio/ADS1115.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../Navio/ADS1115.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../Navio/I2Cdev.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../Navio/I2Cdev.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../Navio/InertialSensor.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../Navio/LSM9DS1.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../Navio/LSM9DS1.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../Navio/MB85RC04.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../Navio/MB85RC04.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../Navio/MB85RC256.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../Navio/MB85RC256.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../Navio/MPU9250.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../Navio/MPU9250.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../Navio/MS5611.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../Navio/MS5611.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../Navio/PCA9685.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../Navio/PCA9685.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../Navio/PWM.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../Navio/PWM.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../Navio/RCInput.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../Navio/RCInput.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../Navio/RGBled.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../Navio/RGBled.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../Navio/SPIdev.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../Navio/Ublox.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../Navio/Ublox.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../Navio/Util.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../Navio/Util.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../Navio/gpio.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../Navio/gpio.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="/home/emran/ws/git_ws/Testbed-Code/Navio_Threads/include/Navio_Threads.hpp"
             ex="false"
             tool="3"
@@ -81,12 +182,14 @@
           <developmentMode>5</developmentMode>
           <incDir>
             <pElem>include</pElem>
+            <pElem>../Navio</pElem>
           </incDir>
         </cTool>
         <ccTool>
           <developmentMode>5</developmentMode>
           <incDir>
             <pElem>include</pElem>
+            <pElem>../Navio</pElem>
           </incDir>
         </ccTool>
         <fortranCompilerTool>
@@ -99,6 +202,70 @@
           <commandLine>-lpthread -lrt</commandLine>
         </linkerTool>
       </compileType>
+      <item path="../Navio/ADC.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../Navio/ADC.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../Navio/ADS1115.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../Navio/ADS1115.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../Navio/I2Cdev.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../Navio/I2Cdev.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../Navio/InertialSensor.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../Navio/LSM9DS1.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../Navio/LSM9DS1.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../Navio/MB85RC04.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../Navio/MB85RC04.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../Navio/MB85RC256.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../Navio/MB85RC256.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../Navio/MPU9250.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../Navio/MPU9250.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../Navio/MS5611.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../Navio/MS5611.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../Navio/PCA9685.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../Navio/PCA9685.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../Navio/PWM.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../Navio/PWM.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../Navio/RCInput.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../Navio/RCInput.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../Navio/RGBled.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../Navio/RGBled.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../Navio/SPIdev.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../Navio/Ublox.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../Navio/Ublox.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../Navio/Util.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../Navio/Util.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../Navio/gpio.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../Navio/gpio.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="/home/emran/ws/git_ws/Testbed-Code/Navio_Threads/include/Navio_Threads.hpp"
             ex="false"
             tool="3"

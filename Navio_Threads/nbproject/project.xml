@@ -11,6 +11,7 @@
             <make-dep-projects/>
             <sourceRootList>
                 <sourceRootElem>/home/emran/ws/git_ws/Testbed-Code/Navio_Threads/include</sourceRootElem>
+                <sourceRootElem>../Navio</sourceRootElem>
             </sourceRootList>
             <confList>
                 <confElem>
