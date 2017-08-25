@@ -177,14 +177,14 @@ int initPWM(PWM *pwm)
 	}
 
 	pwm->enable(_MOTOR1);
-	pwm->enable(_MOTOR1);
-	pwm->enable(_MOTOR1);
-	pwm->enable(_MOTOR1);
+	pwm->enable(_MOTOR2);
+	pwm->enable(_MOTOR3);
+	pwm->enable(_MOTOR4);
 
 	pwm->set_period(_MOTOR1, 400);
-	pwm->set_period(_MOTOR1, 400);
-	pwm->set_period(_MOTOR1, 400);
-	pwm->set_period(_MOTOR1, 400);
+	pwm->set_period(_MOTOR2, 400);
+	pwm->set_period(_MOTOR3, 400);
+	pwm->set_period(_MOTOR4, 400);
 
 	return 1;
 }
