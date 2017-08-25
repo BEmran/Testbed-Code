@@ -5,6 +5,7 @@
  */
 
 #include "Navio_Threads.hpp"
+#include "SamplingTime.h"    // sampling time
 
 int main(int argc, char** argv) {
     // Welcome msg
