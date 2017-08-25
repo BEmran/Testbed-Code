@@ -52,12 +52,17 @@ void *conThread(void *data)
 
 	struct dataStruct *my_data;
 	my_data = (struct dataStruct *) data;
-
-	// Main loop to read encoders value
+        SamplingTime st(400);
+        float dt, dtsumm = 0;
+	// Main loop
 	while (!_CloseRequested)
-	{       
-                printf("control thread\n");
-		usleep(200000);
+	{   
+            dt = st.tsCalculat();
+            dtsumm += dt;
+            if (dtsumm > 1){
+                dtsumm = 0;
+                printf("control thread with frequency %d\n", 1/dt);
+            }
 	}
 	// Exit procedure
 	printf("Exit control thread\n");
@@ -72,12 +77,17 @@ void *senThread(void *data)
 
 	struct dataStruct *my_data;
 	my_data = (struct dataStruct *) data;
-
-	// Main loop to read encoders value
+        SamplingTime  st(1000);
+        float dt, dtsumm = 0;
+	// Main loop
 	while (!_CloseRequested)
-	{       
-                printf("sensor thread\n");
-		usleep(500000);
+	{   
+            dt = st.tsCalculat();
+            dtsumm += dt;
+            if (dtsumm > 1){
+                dtsumm = 0;
+                printf("sensor thread with frequency %d\n", 1/dt);
+            }
 	}
 	// Exit procedure
 	printf("Exit sensor thread\n");
@@ -92,12 +102,17 @@ void *tcpThread(void *data)
 
 	struct dataStruct *my_data;
 	my_data = (struct dataStruct *) data;
-
-	// Main loop to read encoders value
+        SamplingTime  st(200);
+        float dt, dtsumm = 0;
+	// Main loop
 	while (!_CloseRequested)
-	{       
-                printf("tcp thread\n");
-		usleep(50000);
+	{   
+            dt = st.tsCalculat();
+            dtsumm += dt;
+            if (dtsumm > 1){
+                dtsumm = 0;
+                printf("tcp thread with frequency %d\n", 1/dt);
+            }
 	}
 	// Exit procedure
 	printf("Exit tcp thread\n");

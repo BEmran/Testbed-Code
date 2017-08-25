@@ -12,6 +12,7 @@
 #include <signal.h>     // signal ctrl+c
 #include <stdio.h>      // printf
 #include <unistd.h>     // usleep
+#include "SamplingTime.h"    // sampling time
 
 // ********************************************************** //
 // Global variables:
@@ -33,6 +34,6 @@ void *senThread(void *data);
 void *tcpThread(void *data);
 void ctrlCHandler(int signal);
 
-
 #endif /* NAVIO_THREADS_HPP */
 
+W

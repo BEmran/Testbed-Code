@@ -35,6 +35,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/_ext/918b8974/SamplingTime.o \
 	${OBJECTDIR}/Navio_Threads.o
 
 
@@ -60,7 +61,12 @@ LDLIBSOPTIONS=
 
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/navio_threads: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/navio_threads ${OBJECTFILES} ${LDLIBSOPTIONS} -lpthread
+	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/navio_threads ${OBJECTFILES} ${LDLIBSOPTIONS} -lpthread -lrt
+
+${OBJECTDIR}/_ext/918b8974/SamplingTime.o: /home/emran/ws/git_ws/Testbed-Code/Navio_Threads/include/SamplingTime.cpp
+	${MKDIR} -p ${OBJECTDIR}/_ext/918b8974
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Iinclude -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/918b8974/SamplingTime.o /home/emran/ws/git_ws/Testbed-Code/Navio_Threads/include/SamplingTime.cpp
 
 ${OBJECTDIR}/Navio_Threads.o: Navio_Threads.cpp
 	${MKDIR} -p ${OBJECTDIR}
