@@ -85,16 +85,16 @@ public:
             is->update(); // update inertial sensor
             is->read_gyroscope(&gx, &gy, &gz); // get gyro data 
 
-            //gx *= 180 / PI;
-            //gy *= 180 / PI;
-            //gz *= 180 / PI;
-	    //offset[0] += (-gx*0.0175);
-	    //offset[1] += (-gy*0.0175);
-            //offset[2] += (-gz*0.0175);
+            gx *= 180 / PI;
+            gy *= 180 / PI;
+            gz *= 180 / PI;
+	    gyroOffset[0] += (-gx*0.0175);
+	    gyroOffset[1] += (-gy*0.0175);
+            gyroOffset[2] += (-gz*0.0175);
             
-            gyroOffset[0] += -gx;
-            gyroOffset[1] += -gy;
-            gyroOffset[2] += -gz;
+            //gyroOffset[0] += -gx;
+            //gyroOffset[1] += -gy;
+            //gyroOffset[2] += -gz;
             usleep(10000);
         }
         gyroOffset[0] /= maxCount;
@@ -120,14 +120,14 @@ public:
         ax /= G_SI;
         ay /= G_SI;
         az /= G_SI;
-        //gx *= 180 / PI;
-        //gy *= 180 / PI;
-        //gz *= 180 / PI;
+        gx *= 180 / PI;
+        gy *= 180 / PI;
+        gz *= 180 / PI;
 
         // TODO: Apply calibration offset
-        gx -= gyroOffset[0];
-	gy -= gyroOffset[1];
-	gz -= gyroOffset[2];
+        //gx -= gyroOffset[0];
+	//gy -= gyroOffset[1];
+	//gz -= gyroOffset[2];
         // TODO: Apply rotation for x front y left and z up
     }
 

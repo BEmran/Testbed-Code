@@ -64,7 +64,7 @@ int main(int argc, char *argv[]) {
     }
     // Initialize imu sensor
     IMU *imu = new IMU(sensor_name);
-    if (imu->is) {
+    if (imu->is == NULL) {
         printf("Wrong sensor name. Select: mpu or lsm\n");
         return EXIT_FAILURE;
     }
@@ -74,7 +74,8 @@ int main(int argc, char *argv[]) {
 
     // Setup AHRS
     AHRS ahrs;
-
+    ahrs.setGyroOffset(imu->gyroOffset[0], imu->gyroOffset[1], imu->gyroOffset[2]);
+    
     // create file to store data
     FILE * dataFile;
     dataFile = fopen ("data.txt","w");
@@ -103,7 +104,7 @@ int main(int argc, char *argv[]) {
     float mindt = 0.01;
     float dtsumm = 0;
     int isFirst = 1;
-
+    dt = getdt(1300.0);
     while (1) {
         // Calculate delta time 
         dt = getdt(1300.0);
@@ -114,12 +115,12 @@ int main(int argc, char *argv[]) {
             if (dt < mindt) mindt = dt;
         }
         isFirst = 0;
-
+        
         // update imu data
         imu->update();
 
         // update AHRS
-        ahrs.updateIMU(imu->ax, imu->ay, imu->az, imu->gx, imu->gy, imu->gz, dt);
+        ahrs.updateIMU(imu->ax, imu->ay, imu->az, imu->gx*0.0175, imu->gy*0.0175, imu->gz*0.0175, dt);
 
         // Read Euler angles 
         ahrs.getEuler(&roll, &pitch, &yaw);
