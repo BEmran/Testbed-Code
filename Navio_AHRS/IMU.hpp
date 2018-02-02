@@ -120,9 +120,9 @@ public:
         ax /= G_SI;
         ay /= G_SI;
         az /= G_SI;
-        gx *= 180 / PI;
-        gy *= 180 / PI;
-        gz *= 180 / PI;
+        //gx *= 180 / PI;
+        //gy *= 180 / PI;
+        //gz *= 180 / PI;
 
         // TODO: Apply calibration offset
         //gx -= gyroOffset[0];

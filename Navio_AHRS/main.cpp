@@ -120,7 +120,7 @@ int main(int argc, char *argv[]) {
         imu->update();
 
         // update AHRS
-        ahrs.updateIMU(imu->ax, imu->ay, imu->az, imu->gx*0.0175, imu->gy*0.0175, imu->gz*0.0175, dt);
+        ahrs.updateIMU(imu->ax, imu->ay, imu->az, imu->gx, imu->gy, imu->gz, dt);
 
         // Read Euler angles 
         ahrs.getEuler(&roll, &pitch, &yaw);
