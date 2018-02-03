@@ -81,9 +81,9 @@ int main(int argc, char *argv[]) {
             // Console output
             fprintf("%d %5.5f %5.5f %5.5f %5.5f %5.5f %5.5f %5.5f %5.5f %5.5f\n",
                     int(1 / dt),
-                    sensors.gx_, sensors.gy_, sensors.gz_,
-                    sensors.ax_, sensors.ay_, sensors.az_,
-                    sensors.mx_, sensors.my_, sensors.mz_);
+                    sensors->gx_, sensors->gy_, sensors->gz_,
+                    sensors->ax_, sensors->ay_, sensors->az_,
+                    sensors->mx_, sensors->my_, sensors->mz_);
         }
     }
 }
