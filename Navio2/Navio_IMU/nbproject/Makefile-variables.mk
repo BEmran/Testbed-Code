@@ -7,21 +7,21 @@ CND_BASEDIR=`pwd`
 CND_BUILDDIR=build
 CND_DISTDIR=dist
 # Debug configuration
-CND_PLATFORM_Debug=GNU-Linux
-CND_ARTIFACT_DIR_Debug=dist/Debug/GNU-Linux
+CND_PLATFORM_Debug=None-Linux
+CND_ARTIFACT_DIR_Debug=dist/Debug/None-Linux
 CND_ARTIFACT_NAME_Debug=navio_imu
-CND_ARTIFACT_PATH_Debug=dist/Debug/GNU-Linux/navio_imu
-CND_PACKAGE_DIR_Debug=dist/Debug/GNU-Linux/package
+CND_ARTIFACT_PATH_Debug=dist/Debug/None-Linux/navio_imu
+CND_PACKAGE_DIR_Debug=dist/Debug/None-Linux/package
 CND_PACKAGE_NAME_Debug=navioimu.tar
-CND_PACKAGE_PATH_Debug=dist/Debug/GNU-Linux/package/navioimu.tar
+CND_PACKAGE_PATH_Debug=dist/Debug/None-Linux/package/navioimu.tar
 # Release configuration
-CND_PLATFORM_Release=GNU-Linux
-CND_ARTIFACT_DIR_Release=dist/Release/GNU-Linux
+CND_PLATFORM_Release=None-Linux
+CND_ARTIFACT_DIR_Release=dist/Release/None-Linux
 CND_ARTIFACT_NAME_Release=navio_imu
-CND_ARTIFACT_PATH_Release=dist/Release/GNU-Linux/navio_imu
-CND_PACKAGE_DIR_Release=dist/Release/GNU-Linux/package
+CND_ARTIFACT_PATH_Release=dist/Release/None-Linux/navio_imu
+CND_PACKAGE_DIR_Release=dist/Release/None-Linux/package
 CND_PACKAGE_NAME_Release=navioimu.tar
-CND_PACKAGE_PATH_Release=dist/Release/GNU-Linux/package/navioimu.tar
+CND_PACKAGE_PATH_Release=dist/Release/None-Linux/package/navioimu.tar
 #
 # include compiler specific variables
 #
