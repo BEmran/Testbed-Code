@@ -65,7 +65,7 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/navio_imu: ${OBJECTFILES}
 ${OBJECTDIR}/_ext/e5cdef07/Navio_IMU.o: /home/emran/ws/netbeans_ws/Navio_IMU/Navio_IMU.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/e5cdef07
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Iinclude -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/e5cdef07/Navio_IMU.o /home/emran/ws/netbeans_ws/Navio_IMU/Navio_IMU.cpp
+	$(COMPILE.cc) -O2 -Iinclude -I../lib -I../lib/Navio2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/e5cdef07/Navio_IMU.o /home/emran/ws/netbeans_ws/Navio_IMU/Navio_IMU.cpp
 
 # Subprojects
 .build-subprojects:

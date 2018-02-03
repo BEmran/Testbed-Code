@@ -1,0 +1,11 @@
+CXX ?= g++
+NAVIO = ../lib/Navio2
+INCLUDES = -I ../lib
+
+all:
+	$(MAKE) -C ../lib/Navio all
+	$(MAKE) -C ../lib all
+	$(CXX) -std=c++11 $(INCLUDES) -L$(NAVIO) Imu.cpp -lnavio -o Imu -lrt -lpthread
+
+clean:
+	rm -f Imu

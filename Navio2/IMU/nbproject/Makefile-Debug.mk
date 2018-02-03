@@ -21,8 +21,8 @@ FC=gfortran
 AS=as
 
 # Macros
-CND_PLATFORM=None-Linux
-CND_DLIB_EXT=so
+CND_PLATFORM=MinGW-Windows
+CND_DLIB_EXT=dll
 CND_CONF=Debug
 CND_DISTDIR=dist
 CND_BUILDDIR=build
@@ -35,7 +35,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/_ext/e5cdef07/Navio_IMU.o
+	${OBJECTDIR}/_ext/562508e5/Sensors.o \
+	${OBJECTDIR}/Imu.o
 
 
 # C Compiler Flags
@@ -56,16 +57,21 @@ LDLIBSOPTIONS=
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/navio_imu
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/imu.exe
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/navio_imu: ${OBJECTFILES}
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/imu.exe: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/navio_imu ${OBJECTFILES} ${LDLIBSOPTIONS} -lr -lpthread
+	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/imu ${OBJECTFILES} ${LDLIBSOPTIONS}
 
-${OBJECTDIR}/_ext/e5cdef07/Navio_IMU.o: /home/emran/ws/netbeans_ws/Navio_IMU/Navio_IMU.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/e5cdef07
+${OBJECTDIR}/_ext/562508e5/Sensors.o: ../../lib/Sensors.cpp
+	${MKDIR} -p ${OBJECTDIR}/_ext/562508e5
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Iinclude -I../lib -I../lib/Navio2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/e5cdef07/Navio_IMU.o /home/emran/ws/netbeans_ws/Navio_IMU/Navio_IMU.cpp
+	$(COMPILE.cc) -g -I../../lib -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/562508e5/Sensors.o ../../lib/Sensors.cpp
+
+${OBJECTDIR}/Imu.o: Imu.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I../../lib -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Imu.o Imu.cpp
 
 # Subprojects
 .build-subprojects:

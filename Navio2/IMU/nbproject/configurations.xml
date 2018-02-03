@@ -4,7 +4,7 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <itemPath>/home/emran/ws/netbeans_ws/Navio_IMU/include/main.hpp</itemPath>
+      <itemPath>../../lib/Sensors.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -13,7 +13,8 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>/home/emran/ws/netbeans_ws/Navio_IMU/Navio_IMU.cpp</itemPath>
+      <itemPath>Imu.cpp</itemPath>
+      <itemPath>../../lib/Sensors.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -25,11 +26,9 @@
                    projectFiles="false"
                    kind="IMPORTANT_FILES_FOLDER">
       <itemPath>Makefile</itemPath>
+      <itemPath>MakefileSimple</itemPath>
     </logicalFolder>
   </logicalFolder>
-  <sourceRootList>
-    <Elem>/home/emran/ws/netbeans_ws/Navio_IMU</Elem>
-  </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
     <conf name="Debug" type="1">
@@ -39,31 +38,17 @@
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
       <compileType>
-        <cTool>
-          <incDir>
-            <pElem>include</pElem>
-          </incDir>
-        </cTool>
         <ccTool>
           <incDir>
-            <pElem>include</pElem>
-            <pElem>../lib</pElem>
-            <pElem>../lib/Navio2</pElem>
+            <pElem>../../lib</pElem>
           </incDir>
         </ccTool>
-        <linkerTool>
-          <commandLine>-lr -lpthread</commandLine>
-        </linkerTool>
       </compileType>
-      <item path="/home/emran/ws/netbeans_ws/Navio_IMU/Navio_IMU.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
+      <item path="../../lib/Sensors.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="/home/emran/ws/netbeans_ws/Navio_IMU/include/main.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="../../lib/Sensors.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Imu.cpp" ex="false" tool="1" flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="1">
@@ -75,16 +60,11 @@
       <compileType>
         <cTool>
           <developmentMode>5</developmentMode>
-          <incDir>
-            <pElem>include</pElem>
-          </incDir>
         </cTool>
         <ccTool>
           <developmentMode>5</developmentMode>
           <incDir>
-            <pElem>include</pElem>
-            <pElem>../lib</pElem>
-            <pElem>../lib/Navio2</pElem>
+            <pElem>../../lib</pElem>
           </incDir>
         </ccTool>
         <fortranCompilerTool>
@@ -93,19 +73,12 @@
         <asmTool>
           <developmentMode>5</developmentMode>
         </asmTool>
-        <linkerTool>
-          <commandLine>-lr -lpthread</commandLine>
-        </linkerTool>
       </compileType>
-      <item path="/home/emran/ws/netbeans_ws/Navio_IMU/Navio_IMU.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
+      <item path="../../lib/Sensors.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="/home/emran/ws/netbeans_ws/Navio_IMU/include/main.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="../../lib/Sensors.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Imu.cpp" ex="false" tool="1" flavor2="0">
       </item>
     </conf>
   </confs>
