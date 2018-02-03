@@ -1,13 +1,19 @@
-#ifndef ADC_H
-#define ADC_H
+#pragma once
 
-class ADC
+#include <cstddef>
+
+class ADC 
 {
 public:
-    virtual void initialize() = 0;
-    virtual int get_channel_count(void) = 0;
-    virtual int read(int ch) = 0;
+    void init();
+    int read(int ch); 
+    int get_channel_count(void);
+    ADC();
+    ~ADC();
+
+private:
+    int open_channel(int ch);
+
+    static const size_t CHANNEL_COUNT = 6;
+    int channels[CHANNEL_COUNT];
 };
-
-#endif // ADC_H
-

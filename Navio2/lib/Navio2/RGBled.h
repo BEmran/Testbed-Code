@@ -5,8 +5,17 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <cstdint>
-#include "Common/gpio.h"
-#include "Common/Led.h"
+#include "gpio.h"
+
+enum class Colors {
+    Black,
+    Red,
+    Green,
+    Blue,
+    Cyan,
+    Magenta,
+    Yellow,
+    White};
 
 class RGBled {
 public:

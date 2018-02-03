@@ -1,14 +1,18 @@
-#ifndef RCINPUT
-#define RCINPUT
+#pragma once
 
+#include <cstddef>
 
-class RCInput {
-
+class RCInput 
+{
 public:
-    virtual void initialize() = 0;
-    virtual int read(int c) = 0;
+    void init();
+    int read(int ch); 
+    RCInput();
+    ~RCInput();
 
+private:
+    int open_channel(int ch);
+
+    static const size_t CHANNEL_COUNT = 14;
+    int channels[CHANNEL_COUNT];
 };
-
-#endif // RCINPUT
-

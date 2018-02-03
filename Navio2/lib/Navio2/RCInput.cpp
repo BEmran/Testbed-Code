@@ -4,21 +4,21 @@
 #include <cstdlib>
 #include <err.h>
 
-#include "RCInput_Navio2.h"
-#include <Common/Util.h>
+#include "RCInput.h"
+#include "Util.h"
 
 #define RCIN_SYSFS_PATH "/sys/kernel/rcio/rcin"
 
-RCInput_Navio2::RCInput_Navio2()
+RCInput::RCInput()
 {
 
 }
 
-RCInput_Navio2::~RCInput_Navio2()
+RCInput::~RCInput()
 {
 }
 
-void RCInput_Navio2::initialize()
+void RCInput::init()
 {
     for (size_t i = 0; i < ARRAY_SIZE(channels); i++) {
         channels[i] = open_channel(i);
@@ -28,14 +28,8 @@ void RCInput_Navio2::initialize()
     }
 }
 
-int RCInput_Navio2::read(int ch)
+int RCInput::read(int ch)
 {
-    if (ch > ARRAY_SIZE(channels) )
-	{	
-        fprintf(stderr,"Channel number too large\n");
-        return -1;
-	}
-
     char buffer[10];
 
     if (::pread(channels[ch], buffer, ARRAY_SIZE(buffer), 0) < 0) {
@@ -45,7 +39,7 @@ int RCInput_Navio2::read(int ch)
     return atoi(buffer);
 }
 
-int RCInput_Navio2::open_channel(int channel)
+int RCInput::open_channel(int channel)
 {
     char *channel_path;
     if (asprintf(&channel_path, "%s/ch%d", RCIN_SYSFS_PATH, channel) == -1) {
