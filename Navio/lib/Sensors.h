@@ -13,9 +13,9 @@
 #include <sys/time.h> // time
 
 // Navio2 libraries
-#include "Navio2/MPU9250.h"
-#include "Navio2/LSM9DS1.h"
-#include "Navio2/Util.h"
+#include "Navio/Common/MPU9250.h"
+#include "Navio/Navio2/LSM9DS1.h"
+#include "Navio/Common/Util.h"
 
 // Global defined variables
 #define G_SI 9.80665
@@ -33,7 +33,7 @@ public:
     // Objects
     InertialSensor *imu_;    // IMU Sensor
     FILE * row_data_file_;   // File to store row data 
-    
+    FILE * notes_file_;      // File to store notes
     // Checking variables
     bool IsIMUEnabled;
     bool IsIMUCalibrated;

@@ -25,7 +25,10 @@ Sensors::Sensors() {
 
     getTime(); // Initialize time variables the current time 
     fprintf(row_data_file_, "Row data started in the following order:\n"
-            "time, gx, gy, gz, ax, ay, az, mx, my, mz\n");
+            "time, gx, gy, gz, ax, ay, az, mx, my, mz;\n");
+
+    notes_file_ = fopen("info.txt","w");
+    printf("Start storing the notes in the file \"info.txt\"\n");
 }
 //**************************************************************************
 // Delete sensor object
@@ -127,7 +130,7 @@ void Sensors::storeRowData() {
     // get current time stamp
     getTime();
     // Write data
-    fprintf(row_data_file_, "%10ul %5.5f %5.5f %5.5f %5.5f %5.5f %5.5f %5.5f %5.5f %5.5f\n",
+    fprintf(row_data_file_, "%10ul, %5.5f, %5.5f, %5.5f, %5.5f, %5.5f, %5.5f, %5.5f, %5.5f, %5.5f;\n",
             time_now_,
             gx_, gy_, gz_,
             ax_, ay_, az_,
@@ -154,6 +157,6 @@ void Sensors::storeInfo() {
     // get current time stamp
     getTime();
     // Write data
-    fprintf(row_data_file_, "\\info: %10ul %5.5f %5.5f %5.5f\n",
+    fprintf(notes_file_, "info gyro offset: %10u,l %5.5f, %5.5f, %5.5f;\n",
             time_now_, gyro_offset_[0], gyro_offset_[1], gyro_offset_[2]);
 }

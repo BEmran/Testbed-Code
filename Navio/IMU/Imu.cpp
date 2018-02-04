@@ -66,10 +66,10 @@ int main(int argc, char *argv[]) {
 
     // Timing data
     float dtsumm = 0;
-    float dt = getdt(1300.0);
+    float dt = getdt(400.0);
     while (1) {
         // Calculate delta time 
-        dt = getdt(1300.0);
+        dt = getdt(400.0);
 
         // update imu data
         sensors->update();
