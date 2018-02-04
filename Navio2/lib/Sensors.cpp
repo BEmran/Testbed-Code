@@ -6,6 +6,9 @@
  */
 
 #include "Sensors.h"
+//**************************************************************************
+// Create sensor object and initiize default values
+//**************************************************************************
 
 Sensors::Sensors() {
     // Initialize default values
@@ -24,6 +27,9 @@ Sensors::Sensors() {
     fprintf(row_data_file_, "Row data started in the following order:\n"
             "time, gx, gy, gz, ax, ay, az, mx, my, mz\n");
 }
+//**************************************************************************
+// Delete sensor object
+//**************************************************************************
 
 Sensors::~Sensors() {
     printf("Delete sensors object\n");
@@ -48,9 +54,10 @@ bool Sensors::createIMU(char *sensor_name) {
         imu_ = NULL;
         return false;
     }
-    // Check if imu sensor is enabled
+    // initialize chip
     imu_->initialize();
 
+    // Check if imu sensor is enabled
     if (imu_->probe()) {
         printf("IMU sensor is enabled\n");
         IsIMUEnabled = true;
@@ -108,8 +115,8 @@ void Sensors::updateIMU() {
     imu_->read_gyroscope(&gx_, &gy_, &gz_);
     imu_->read_accelerometer(&ax_, &ay_, &az_);
     imu_->read_magnetometer(&mx_, &my_, &mz_);
-   // printf("%f %f %f",gx_,ax_,mx_);
-    // Store row data
+    
+    // Store the row data 
     storeRowData();
 }
 //**************************************************************************
@@ -147,7 +154,6 @@ void Sensors::storeInfo() {
     // get current time stamp
     getTime();
     // Write data
-    fprintf(row_data_file_, "%10ul %5.5f %5.5f %5.5f\n",
-            time_now_,
-            gyro_offset_[0], gyro_offset_[1], gyro_offset_[2]);
+    fprintf(row_data_file_, "\\info: %10ul %5.5f %5.5f %5.5f\n",
+            time_now_, gyro_offset_[0], gyro_offset_[1], gyro_offset_[2]);
 }

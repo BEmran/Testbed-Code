@@ -38,7 +38,7 @@ public:
     bool IsIMUEnabled;
     bool IsIMUCalibrated;
     
-    // Methods
+    // Public methods
     Sensors();
     ~Sensors();
     bool createIMU(char *sensor_name);
@@ -49,6 +49,7 @@ private:
     // Row sensor data
     long unsigned time_now_;
     
+    // Private methods
     void updateIMU();
     void storeRowData();
     void getTime();

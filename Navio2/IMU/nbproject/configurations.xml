@@ -14,7 +14,7 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>Imu.cpp</itemPath>
-      <itemPath>../../lib/Sensors.cpp</itemPath>
+      <itemPath>../lib/Sensors.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -44,9 +44,9 @@
           </incDir>
         </ccTool>
       </compileType>
-      <item path="../../lib/Sensors.cpp" ex="false" tool="1" flavor2="0">
-      </item>
       <item path="../../lib/Sensors.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../lib/Sensors.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Imu.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -74,9 +74,9 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
-      <item path="../../lib/Sensors.cpp" ex="false" tool="1" flavor2="0">
-      </item>
       <item path="../../lib/Sensors.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../lib/Sensors.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Imu.cpp" ex="false" tool="1" flavor2="0">
       </item>

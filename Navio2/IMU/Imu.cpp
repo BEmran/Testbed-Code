@@ -7,7 +7,7 @@
 
 #include <stdio.h>
 #include <sys/time.h>
-#include "Sensors.h"
+#include "../lib/Sensors.h"
 
 unsigned long previoustime, currenttime;
 float getdt(float Hz);
@@ -29,22 +29,18 @@ void print_help() {
 int main(int argc, char *argv[]) {
     int parameter;
     char *sensor_name;
-
+    // Check if APM is busy: return false if free 
     if (check_apm()) {
         return 1;
     }
-
+    // Print help message for less than two parameters 
     if (argc < 2) {
         printf("Enter parameter\n");
         print_help();
         return 0;
     }
-    InertialSensor * m = new MPU9250();
-    float a,b,c;
-    m->update();
-    m->read_gyroscope(&a,&b,&c);
-    printf("%f %f %f\n",a,b,c);
-    // prevent the error message
+
+    // Prevent the error message
     opterr = 0;
     while ((parameter = getopt(argc, argv, "i:h")) != -1) {
         switch (parameter) {
