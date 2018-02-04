@@ -51,7 +51,7 @@ private:
     
     void updateIMU();
     void storeRowData();
-    float getTime();
+    void getTime();
     void storeInfo();
 };
 

@@ -79,7 +79,7 @@ int main(int argc, char *argv[]) {
         if (dtsumm > 0.05) {
             dtsumm = 0;
             // Console output
-            fprintf("%d %5.5f %5.5f %5.5f %5.5f %5.5f %5.5f %5.5f %5.5f %5.5f\n",
+            printf("%d %5.5f %5.5f %5.5f %5.5f %5.5f %5.5f %5.5f %5.5f %5.5f\n",
                     int(1 / dt),
                     sensors->gx_, sensors->gy_, sensors->gz_,
                     sensors->ax_, sensors->ay_, sensors->az_,

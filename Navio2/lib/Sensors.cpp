@@ -17,12 +17,12 @@ Sensors::Sensors() {
     gyro_offset_ [2] = 0.0;
 
     // Create a file to store the row data
-    row_data_file_ = fopen("data.txt", "w");
+    row_data_file_ = fopen("row_data.txt", "w");
     printf("Start storing the data in the file data.txt");
 
     getTime(); // Initialize time variables the current time 
     fprintf(row_data_file_, "Row data started in the following order:\n"
-            "time, gx, gy, gz, ax, ay, az, mx, my, mz");
+            "time, gx, gy, gz, ax, ay, az, mx, my, mz\n");
 }
 
 Sensors::~Sensors() {
