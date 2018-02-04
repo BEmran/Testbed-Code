@@ -18,7 +18,7 @@ Sensors::Sensors() {
 
     // Create a file to store the row data
     row_data_file_ = fopen("row_data.txt", "w");
-    printf("Start storing the data in the file data.txt");
+    printf("Start storing the data in the file \"row_data.txt\"\n");
 
     getTime(); // Initialize time variables the current time 
     fprintf(row_data_file_, "Row data started in the following order:\n"
@@ -26,7 +26,7 @@ Sensors::Sensors() {
 }
 
 Sensors::~Sensors() {
-    printf("Delete sensors object\n")
+    printf("Delete sensors object\n");
             delete this;
 }
 //**************************************************************************
@@ -49,6 +49,8 @@ bool Sensors::createIMU(char *sensor_name) {
         return false;
     }
     // Check if imu sensor is enabled
+    imu_->initialize();
+
     if (imu_->probe()) {
         printf("IMU sensor is enabled\n");
         IsIMUEnabled = true;
@@ -106,7 +108,7 @@ void Sensors::updateIMU() {
     imu_->read_gyroscope(&gx_, &gy_, &gz_);
     imu_->read_accelerometer(&ax_, &ay_, &az_);
     imu_->read_magnetometer(&mx_, &my_, &mz_);
-
+   // printf("%f %f %f",gx_,ax_,mx_);
     // Store row data
     storeRowData();
 }

@@ -39,7 +39,11 @@ int main(int argc, char *argv[]) {
         print_help();
         return 0;
     }
-
+    InertialSensor * m = new MPU9250();
+    float a,b,c;
+    m->update();
+    m->read_gyroscope(&a,&b,&c);
+    printf("%f %f %f\n",a,b,c);
     // prevent the error message
     opterr = 0;
     while ((parameter = getopt(argc, argv, "i:h")) != -1) {

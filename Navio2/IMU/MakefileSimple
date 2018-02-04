@@ -1,6 +1,6 @@
 CXX ?= g++
 LIB = ../lib
-
+NAVIO = ../lib/Navio2
 all:
 	$(MAKE) -C $(LIB) all
 	$(CXX) -I $(LIB) -L$(LIB) Imu.cpp -lnavio -o Imu -lrt -lpthread
