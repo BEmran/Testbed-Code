@@ -25,8 +25,8 @@ Sensors::Sensors() {
 
     getTime(); // Initialize time variables the current time 
     fprintf(row_data_file_, "Row data started in the following order:\n"
-            "time, gx, gy, gz, ax, ay, az, mx, my, mz;\n");
-
+            "time, gx, gy, gz, ax, ay, az, mx, my, mz, temp, pres;\n");
+    
     notes_file_ = fopen("info.txt","w");
     printf("Start storing the notes in the file \"info.txt\"\n");
 }
@@ -71,21 +71,31 @@ bool Sensors::createIMU(char *sensor_name) {
     return IsIMUEnabled;
 }
 //**************************************************************************
+// Create barometer sensor
+//**************************************************************************
+
+bool Sensors::createBarometer() {
+    // Create and initialize barometer sensor
+    printf("Create barometer sensor\n");
+    barometer_.initialize();
+
+    return true;
+}
+//**************************************************************************
 // Update all sensors
 //**************************************************************************
 
-void Sensors::update() {
-    // Read raw measurements from the imu sensor
+void Sensors::updateAll() {
+    // Read measurements from the imu sensor
     updateIMU();
-    // Scale raw measurements 
-    ax_ /= G_SI;
-    ay_ /= G_SI;
-    az_ /= G_SI;
-    // Apply calibration offset
-    gx_ -= gyro_offset_[0];
-    gy_ -= gyro_offset_[1];
-    gz_ -= gyro_offset_[2];
+    
+    // Read measurements from the barometer sensor
+    updateBarometer();
+        
+    // Store the row data 
+    storeData();
 }
+
 //**************************************************************************
 // Calibrate gyro sensor
 //**************************************************************************
@@ -93,23 +103,24 @@ void Sensors::update() {
 void Sensors::gyroCalibrate() {
     //--------------------------------------------------------------------------
     printf("Beginning Gyro calibration...\n");
-    int maxCount = 500;
-    for (int i = 0; i < maxCount; i++) {
+    float maxCount = 500.0;
+    float offset[3];    // use temp values to not change the gyro_offset variables
+    for (int i = 0; i < int(maxCount); i++) {
         updateIMU();
-        gyro_offset_[0] -= gx_;
-        gyro_offset_[1] -= gy_;
-        gyro_offset_[2] -= gz_;
+        offset[0] -= gx_;
+        offset[1] -= gy_;
+        offset[2] -= gz_;
         usleep(10000);
     }
-    gyro_offset_[0] /= maxCount;
-    gyro_offset_[1] /= maxCount;
-    gyro_offset_[2] /= maxCount;
+    gyro_offset_[0] = offset[0] / maxCount;
+    gyro_offset_[1] = offset[1] / maxCount;
+    gyro_offset_[2] = offset[2] / maxCount;
 
     printf("Gyro offsets are: %f %f %f\n", gyro_offset_[0], gyro_offset_[1], gyro_offset_[2]);
     storeInfo();
 }
 //**************************************************************************
-// Update imu sensor and store the row measurements
+// Read imu sensor 
 //**************************************************************************
 
 void Sensors::updateIMU() {
@@ -117,24 +128,44 @@ void Sensors::updateIMU() {
     imu_->update();
     imu_->read_gyroscope(&gx_, &gy_, &gz_);
     imu_->read_accelerometer(&ax_, &ay_, &az_);
-    imu_->read_magnetometer(&mx_, &my_, &mz_);
+    imu_->read_magnetometer(&mx_, &my_, &mz_);   
+
+    // Scale raw measurements 
+    ax_ /= G_SI;
+    ay_ /= G_SI;
+    az_ /= G_SI;
     
-    // Store the row data 
-    storeRowData();
+    // Apply calibration offset
+    gx_ -= gyro_offset_[0];
+    gy_ -= gyro_offset_[1];
+    gz_ -= gyro_offset_[2]; 
+}
+//**************************************************************************
+// Read Barometer sensor 
+//**************************************************************************
+
+void Sensors::updateBarometer() {
+    // Up raw measurements from the barometer sensor
+    barometer_->update();
+    // Calculate temperature and pressure values
+    temp_ = barometer_->getTemperature();
+    pres_ = barometer_->getPressure();
 }
 //**************************************************************************
 // Store row measurements
 //**************************************************************************
 
-void Sensors::storeRowData() {
+void Sensors::storeData() {
     // get current time stamp
     getTime();
     // Write data
-    fprintf(row_data_file_, "%10ul, %5.5f, %5.5f, %5.5f, %5.5f, %5.5f, %5.5f, %5.5f, %5.5f, %5.5f;\n",
+    fprintf(row_data_file_, "%10ul, %5.5f, %5.5f, %5.5f, %5.5f, %5.5f, %5.5f,"
+            " %5.5f, %5.5f, %5.5f, %5.5f, %5.5f;\n",
             time_now_,
             gx_, gy_, gz_,
             ax_, ay_, az_,
-            mx_, my_, mz_);
+            mx_, my_, mz_,
+            temp_, pres_);
 }
 //**************************************************************************
 // Get the current time 
@@ -159,4 +190,21 @@ void Sensors::storeInfo() {
     // Write data
     fprintf(notes_file_, "info gyro offset: %10u,l %5.5f, %5.5f, %5.5f;\n",
             time_now_, gyro_offset_[0], gyro_offset_[1], gyro_offset_[2]);
+}
+
+//**************************************************************************
+// Display measurements
+//**************************************************************************
+
+void Sensors::displayData() {
+    // get current time stamp
+    getTime();
+    // Write data
+    printf("time: %10ul, gx=%5.5f, gy=%5.5f, gz=%5.5f, ax=%5.5f, ay=%5.5f, az=%5.5f,"
+            " mx=%5.5f, my=%5.5f, mz=%5.5f, temperature=%5.5f, pressure=%5.5f;\n",
+            time_now_,
+            gx_, gy_, gz_,
+            ax_, ay_, az_,
+            mx_, my_, mz_,
+            temp_, pres_);
 }
