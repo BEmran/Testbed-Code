@@ -193,7 +193,9 @@ void Sensors::updateIMU() {
     ax_ = (ax_ + ax_mid_)/ax_sen_;
     ay_ = (ay_ + ay_mid_)/ay_sen_;
     az_ = (az_ + az_mid_)/az_sen_;
-
+    
+   // Store data
+   storeData();
 }
 //**************************************************************************
 // Read Barometer sensor 
@@ -214,8 +216,8 @@ void Sensors::storeData() {
     // get current time stamp
     getTime();
     // Write data
-    fprintf(row_data_file_, "%10ul, %5.5f, %5.5f, %5.5f, %5.5f, %5.5f, %5.5f,"
-            " %5.5f, %5.5f, %5.5f, %5.5f, %5.5f;\n",
+    fprintf(row_data_file_, "%10ul, %+10.5f, %+10.5f, %+10.5f, %+10.5f, %+10.5f, %+10.5f,"
+            " %+10.5f, %+10.5f, %+10.5f, %+10.5f, %+10.5f;\n",
             time_now_,
             gx_, gy_, gz_,
             ax_, ay_, az_,
