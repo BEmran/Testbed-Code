@@ -11,6 +11,7 @@
 // general libraries
 #include <stdio.h>  // file, printf
 #include <sys/time.h> // time
+#include <unistd.h> // for file checking
 
 // Navio2 libraries
 #include "Navio/Common/MPU9250.h" // IMU mpu chip
@@ -30,6 +31,8 @@ public:
     float gx_, gy_, gz_;    // Accelerometer
     float mx_, my_, mz_;    // Magnetometer
     float gyro_offset_[3];  // offset data of gyro sensor
+    float ax_mid_, ay_mid_, az_mid_;
+    float ax_sen_, ay_sen_, az_sen_; 
     float temp_;            // Temperature
     float pres_;            // Pressure
 
@@ -46,13 +49,14 @@ public:
     Sensors();
     ~Sensors();
     bool createIMU(char *sensor_name);
-    bool createBarometer(char *sensor_name);
+    bool createBarometer();
     void updateAll();
     void updateIMU();
     void updateBarometer();
     void gyroCalibrate();
     void displayData();
-    
+    bool accReadCalibration(char *file_name);
+
 private:
     // Row sensor data
     long unsigned time_now_;

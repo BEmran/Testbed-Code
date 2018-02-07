@@ -18,6 +18,12 @@ Sensors::Sensors() {
     gyro_offset_ [0] = 0.0;
     gyro_offset_ [1] = 0.0;
     gyro_offset_ [2] = 0.0;
+    ax_mid_ = 0.0;
+    ay_mid_ = 0.0;
+    az_mid_ = 0.0;
+    ax_sen_ = 1.0;
+    ay_sen_ = 1.0;
+    az_sen_ = 1.0;
 
     // Create a file to store the row data
     row_data_file_ = fopen("row_data.txt", "w");
@@ -77,7 +83,7 @@ bool Sensors::createIMU(char *sensor_name) {
 bool Sensors::createBarometer() {
     // Create and initialize barometer sensor
     printf("Create barometer sensor\n");
-    barometer_.initialize();
+    barometer_->initialize();
 
     return true;
 }
@@ -104,7 +110,7 @@ void Sensors::gyroCalibrate() {
     //--------------------------------------------------------------------------
     printf("Beginning Gyro calibration...\n");
     float maxCount = 500.0;
-    float offset[3];    // use temp values to not change the gyro_offset variables
+    float offset[3] ={0.0 ,0.0 ,0.0};    // use temp values to not change the gyro_offset variables
     for (int i = 0; i < int(maxCount); i++) {
         updateIMU();
         offset[0] -= gx_;
@@ -119,6 +125,38 @@ void Sensors::gyroCalibrate() {
     printf("Gyro offsets are: %f %f %f\n", gyro_offset_[0], gyro_offset_[1], gyro_offset_[2]);
     storeInfo();
 }
+//******************************************************************************
+// Read acceleromter calibration value from a specific file
+//******************************************************************************
+
+bool Sensors::accReadCalibration(char *file_name){
+
+    char str1[5], str2[5];
+   
+    if( access( file_name, F_OK ) != -1 ) {
+        // file exists
+        printf ("Oppening file %s\n",file_name);
+  
+        FILE* file = fopen(file_name,"r");
+
+      
+        fscanf(file,"%s %f %f %f\n", str1, &ax_mid_ , &ay_mid_, &az_mid_);
+        fscanf(file,"%s %f %f %f\n", str2, &ax_sen_ , &ay_sen_, &az_sen_);        
+  
+        printf("%5s values for x-axis: %+5.5f  z-axis: %+5.5f  z-axis: %+5.5f\n",
+                str1, ax_mid_, ay_mid_, az_mid_);
+        printf("%5s values for x-axis: %+5.5f  z-axis: %+5.5f  z-axis: %+5.5f\n",
+                str2, ax_sen_, ay_sen_, az_sen_);
+
+        fclose(file);
+    
+	return 1;
+    } else {
+        // file doesn't exist
+        printf ("Can't find the file %s\n",file_name);
+        return 0;
+    }
+}
 //**************************************************************************
 // Read imu sensor 
 //**************************************************************************
@@ -130,6 +168,17 @@ void Sensors::updateIMU() {
     imu_->read_accelerometer(&ax_, &ay_, &az_);
     imu_->read_magnetometer(&mx_, &my_, &mz_);   
 
+    // rotate axis
+    float tempax = ax_;
+    ax_ = -ay_;
+    ay_ = -tempax;
+    float tempgx = gx_;
+    gx_ = -gy_;
+    gy_ = -tempgx;
+    float tempmx = mx_;
+    mx_ = -my_;
+    my_ = -tempmx;
+
     // Scale raw measurements 
     ax_ /= G_SI;
     ay_ /= G_SI;
@@ -139,6 +188,12 @@ void Sensors::updateIMU() {
     gx_ -= gyro_offset_[0];
     gy_ -= gyro_offset_[1];
     gz_ -= gyro_offset_[2]; 
+
+    // Apply calibration on accelerometer
+    ax_ = (ax_ + ax_mid_)/ax_sen_;
+    ay_ = (ay_ + ay_mid_)/ay_sen_;
+    az_ = (az_ + az_mid_)/az_sen_;
+
 }
 //**************************************************************************
 // Read Barometer sensor 

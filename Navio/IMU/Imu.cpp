@@ -63,7 +63,8 @@ int main(int argc, char *argv[]) {
     
     // Calibrate gyro sensor
     sensors->gyroCalibrate();
-
+    // Read accelormeter Calibrartion
+    sensors->accReadCalibration("../calibration/acc_calib.txt");
     // Timing data
     float dtsumm = 0;
     float dt = getdt(400.0);
@@ -72,14 +73,14 @@ int main(int argc, char *argv[]) {
         dt = getdt(400.0);
 
         // update imu data
-        sensors->update();
+        sensors->updateIMU();
 
         //------------- Console and network output with a lowered rate ------------
         dtsumm += dt;
         if (dtsumm > 0.05) {
             dtsumm = 0;
             // Console output
-            printf("%d %5.5f %5.5f %5.5f %5.5f %5.5f %5.5f %5.5f %5.5f %5.5f\n",
+            printf("%d %+5.5f %+5.5f %+5.5f %+5.5f %+5.5f %+5.5f %+5.5f %+5.5f %+5.5f\n",
                     int(1 / dt),
                     sensors->gx_, sensors->gy_, sensors->gz_,
                     sensors->ax_, sensors->ay_, sensors->az_,
