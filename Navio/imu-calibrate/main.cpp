@@ -62,54 +62,57 @@ int main(int argc, char *argv[]) {
         return EXIT_FAILURE;
     }
     
-    char x;
+    FILE* file = fopen("acc_calib.txt","w");
     
     float ax_pos_avg,ay_pos_avg,az_pos_avg;
     float ax_neg_avg,ay_neg_avg,az_neg_avg;
    
     printf("Start accelerometer calibration procedure\n");
-    printf("Place the autopilot >>>> Flat <<<< and then enter any key\n");
-    getc(x);
-    az_pos_avg = avgAcc(sensors, 2);
+    printf("Place the autopilot >>>> Flat <<<< and press enter\n");
+    getchar();
+    az_neg_avg = avgAcc(sensors, 2);
     
-    printf("Place the autopilot on its >>>> RIGHT<<<< and then enter any key\n");
-    getc(x);
+    printf("Place the autopilot on its >>>> RIGHT<<<< and press enter\n");
+    getchar();
     ay_pos_avg = avgAcc(sensors, 1);
 
-    printf("Place the autopilot on its >>>> LEFT <<<< and then enter any key\n");
-    getc(x);
+    printf("Place the autopilot on its >>>> LEFT <<<< and press enter\n");
+    getchar();
     ay_neg_avg = avgAcc(sensors, 1);
 
-    printf("Place the autopilot facing >>>> DOWN <<<< and then enter any key\n");
-    getc(x);
+    printf("Place the autopilot facing >>>> DOWN <<<< and press enter\n");
+    getchar();
     ax_pos_avg = avgAcc(sensors, 0);
 
-    printf("Place the autopilot facing >>>> UP <<<< and then enter any key\n");
-    getc(x);
+    printf("Place the autopilot facing >>>> UP <<<< and press enter\n");
+    getchar();
     ax_neg_avg = avgAcc(sensors, 0);
 
-    printf("Place the autopilot on its >>>> BACK <<<< and then enter any key\n");
-    getc(x);
-    az_neg_avg = avgAcc(sensors, 2);  
+    printf("Place the autopilot on its >>>> BACK <<<< and press enter\n");
+    getchar();
+    az_pos_avg = avgAcc(sensors, 2);  
     
     float ax_mid,ay_mid,az_mid;
     float ax_sen,ay_sen,az_sen;
     
-    ax_mid = (ax_pos_avg - ax_neg_avg)/2;
-    ay_mid = (ay_pos_avg - ay_neg_avg)/2;
-    az_mid = (az_pos_avg - az_neg_avg)/2;
-    ax_sen = 1/ax_pos_avg;
-    ay_sen = 1/ay_pos_avg;
-    az_sen = 1/az_pos_avg;        
+    ax_mid = (ax_pos_avg + ax_neg_avg)/2.0;
+    ay_mid = (ay_pos_avg + ay_neg_avg)/2.0;
+    az_mid = (az_pos_avg + az_neg_avg)/2.0;
+    ax_sen = (ax_pos_avg - ax_neg_avg)/2.0;
+    ay_sen = (ay_pos_avg - ay_neg_avg)/2.0;
+    az_sen = (az_pos_avg - az_neg_avg)/2.0;        
     
     printf("-------------------------------------------------------------\n");
     printf("Finish calibration, Here is the result:\n");
-    printf("Middle      value for x-axis:%5.5f  z-axis:%5.5f  z-axis:%5.5f\n",
+    printf("Middle      value for x-axis:%+5.5f  z-axis:%+5.5f  z-axis:%+5.5f\n",
             ax_mid,ay_mid,az_mid);
-    printf("Sensitivity value for x-axis:%5.5f  z-axis:%5.5f  z-axis:%5.5f\n",
+    printf("Sensitivity value for x-axis:%+5.5f  z-axis:%+5.5f  z-axis:%+5.5f\n",
             ax_sen,ax_sen,ax_sen);
     printf("-------------------------------------------------------------\n");
 
+    fprintf (file,"zero %+5.5f %+5.5f %+5.5f\n",ax_mid,ay_mid,az_mid);
+    fprintf (file,"sen  %+5.5f %+5.5f %+5.5f\n",ax_sen,ay_sen,az_sen);
+    fclose(file);
     float dt,dtsumm=0;
     while(1){            
         // Calculate delta time 
@@ -123,9 +126,12 @@ int main(int argc, char *argv[]) {
         if (dtsumm > 0.05) {
             dtsumm = 0;
             // Console output
-            printf("%d %5.5f %5.5f %5.5f\n",
+            printf("%d %+5.5f %+5.5f %+5.5f %+5.5f %+5.5f %+5.5f \n",
                     int(1 / dt),
-                    sensors->ax_, sensors->ay_, sensors->az_);
+                    sensors->ax_, sensors->ay_, sensors->az_,
+                    (sensors->ax_-ax_mid)/ax_sen,
+		    (sensors->ay_-ay_mid)/ay_sen,
+                    (sensors->az_-az_mid)/az_sen);
         }
     }
 }
@@ -167,16 +173,16 @@ float avgAcc(Sensors* sensors, int axis) {
     float maxCount = 500.0;
     float sum = 0;
     for (int i = 0; i < int(maxCount); i++) {
-        sensors.updateIMU();
+        sensors->updateIMU();
         switch (axis) {
             case(0):
-                sum = sum + sensors.ax_;
+                sum = sum + sensors->ax_;
                 break;
             case(1):
-                sum = sum + sensors.ay_;
+                sum = sum + sensors->ay_;
                 break;
             case(2):
-                sum = sum + sensors.az_;
+                sum = sum + sensors->az_;
                 break;
         }
         usleep(10000);
