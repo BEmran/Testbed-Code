@@ -70,7 +70,7 @@ int main(int argc, char *argv[]) {
     printf("Start accelerometer calibration procedure\n");
     printf("Place the autopilot >>>> Flat <<<< and press enter\n");
     getchar();
-    az_neg_avg = avgAcc(sensors, 2);
+    az_pos_avg = avgAcc(sensors, 2);
     
     printf("Place the autopilot on its >>>> RIGHT<<<< and press enter\n");
     getchar();
@@ -90,7 +90,7 @@ int main(int argc, char *argv[]) {
 
     printf("Place the autopilot on its >>>> BACK <<<< and press enter\n");
     getchar();
-    az_pos_avg = avgAcc(sensors, 2);  
+    az_neg_avg = avgAcc(sensors, 2);  
     
     float ax_mid,ay_mid,az_mid;
     float ax_sen,ay_sen,az_sen;
