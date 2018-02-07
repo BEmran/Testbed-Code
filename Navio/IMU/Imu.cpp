@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <sys/time.h>
 #include "../lib/Sensors.h"
-
+#include <iostream>
 unsigned long previoustime, currenttime;
 float getdt(float Hz);
 
@@ -29,6 +29,7 @@ void print_help() {
 int main(int argc, char *argv[]) {
     int parameter;
     char *sensor_name;
+    char *acc_calib_file_name;
     // Check if APM is busy: return false if free 
     if (check_apm()) {
         return 1;
@@ -42,7 +43,8 @@ int main(int argc, char *argv[]) {
 
     // Prevent the error message
     opterr = 0;
-    while ((parameter = getopt(argc, argv, "i:h")) != -1) {
+    while ((parameter = getopt(argc, argv, "i:a:h")) != -1) {
+        std::cout << optarg << std::endl;
         switch (parameter) {
             case 'i': sensor_name = optarg;
                 break;
@@ -51,8 +53,10 @@ int main(int argc, char *argv[]) {
             case '?': printf("Wrong parameter.\n");
                 print_help();
                 return 0;
+	    case 'a': acc_calib_file_name = optarg;
+                break;
         }
-    }
+    } 
 
     // Initialize imu sensor
     Sensors *sensors = new Sensors();
@@ -64,7 +68,8 @@ int main(int argc, char *argv[]) {
     // Calibrate gyro sensor
     sensors->gyroCalibrate();
     // Read accelormeter Calibrartion
-    sensors->accReadCalibration("../calibration/acc_calib.txt");
+    //sensors->accReadCalibration("../calibration/acc_calib.txt");
+    sensors->accReadCalibration(acc_calib_file_name);
     // Timing data
     float dtsumm = 0;
     float dt = getdt(400.0);
@@ -80,7 +85,7 @@ int main(int argc, char *argv[]) {
         if (dtsumm > 0.05) {
             dtsumm = 0;
             // Console output
-            printf("%d %+5.5f %+5.5f %+5.5f %+5.5f %+5.5f %+5.5f %+5.5f %+5.5f %+5.5f\n",
+            printf("%d %+10.5f %+10.5f %+10.5f %+10.5f %+10.5f %+10.5f %+10.5f %+10.5f %+10.5f\n",
                     int(1 / dt),
                     sensors->gx_, sensors->gy_, sensors->gz_,
                     sensors->ax_, sensors->ay_, sensors->az_,
