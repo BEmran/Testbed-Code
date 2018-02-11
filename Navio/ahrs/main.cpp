@@ -30,11 +30,11 @@ int main(int argc, char *argv[]) {
     int parameter;
     char *sensor_name;
     char *acc_calib_file_name;
-    // Check if APM is busy: return false if free 
+    // Check if APM is busy: return false if free
     if (check_apm()) {
         return 1;
     }
-    // Print help message for less than two parameters 
+    // Print help message for less than two parameters
     if (argc < 2) {
         printf("Enter parameter\n");
         print_help();
@@ -55,7 +55,7 @@ int main(int argc, char *argv[]) {
 	    case 'a': acc_calib_file_name = optarg;
                 break;
         }
-    } 
+    }
 
     // Initialize imu sensor
     Sensors *sensors = new Sensors();
@@ -63,13 +63,13 @@ int main(int argc, char *argv[]) {
         printf("Wrong sensor name. Select: mpu or lsm\n");
         return EXIT_FAILURE;
     }
-    
+
     // Calibrate gyro sensor
     sensors->gyroCalibrate();
     // Read accelormeter Calibrartion
     //sensors->accReadCalibration("../calibration/acc_calib.txt");
     sensors->accReadCalibration(acc_calib_file_name);
-    
+
     AHRS ahrs;
 
     // Timing data
@@ -77,7 +77,7 @@ int main(int argc, char *argv[]) {
     float dt = getdt(400.0);
     float roll,pitch,yaw;
     while (1) {
-        // Calculate delta time 
+        // Calculate delta time
         dt = getdt(400.0);
 
         // update imu data
@@ -85,8 +85,8 @@ int main(int argc, char *argv[]) {
 
         ahrs.update(dt,
              sensors->gx_, sensors->gy_, sensors->gz_,
-             sensors->ax_, sensors->ay_, sensors->az_);
-        //     sensors->mx_, sensors->my_, sensors->mz_);
+             sensors->ax_, sensors->ay_, sensors->az_,
+             sensors->mx_, sensors->my_, sensors->mz_);
 
         //------------- Console and network output with a lowered rate ------------
         dtsumm += dt;
