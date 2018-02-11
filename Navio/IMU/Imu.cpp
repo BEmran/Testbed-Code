@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <sys/time.h>
 #include "../lib/Sensors.h"
+#include "../lib/socket.hpp"
 #include <iostream>
 unsigned long previoustime, currenttime;
 float getdt(float Hz);
@@ -70,6 +71,20 @@ int main(int argc, char *argv[]) {
     // Read accelormeter Calibrartion
     //sensors->accReadCalibration("../calibration/acc_calib.txt");
     sensors->accReadCalibration(acc_calib_file_name);
+    
+    //--------------------------- Network setup -------------------------------
+
+    Socket sock;
+
+    if (argc == 5){
+        std::cout << argv[3] << "  " << argv[4] << std::endl;
+        sock = Socket(argv[3], argv[4]);
+    } else if ( (get_navio_version() == NAVIO) && (argc == 3) )
+            sock = Socket(argv[1], argv[2]);
+        else
+            sock = Socket();
+
+
     // Timing data
     float dtsumm = 0;
     float dt = getdt(400.0);
@@ -87,6 +102,11 @@ int main(int argc, char *argv[]) {
             // Console output
             printf("%d %+10.5f %+10.5f %+10.5f %+10.5f %+10.5f %+10.5f %+10.5f %+10.5f %+10.5f\n",
                     int(1 / dt),
+                    sensors->gx_, sensors->gy_, sensors->gz_,
+                    sensors->ax_, sensors->ay_, sensors->az_,
+                    sensors->mx_, sensors->my_, sensors->mz_);
+        
+            sock.output(int(1 / dt),
                     sensors->gx_, sensors->gy_, sensors->gz_,
                     sensors->ax_, sensors->ay_, sensors->az_,
                     sensors->mx_, sensors->my_, sensors->mz_);
