@@ -15,24 +15,30 @@ Sensors::Sensors() {
     imu_ = NULL;
     IsIMUEnabled = false;
     IsIMUCalibrated = false;
-    gyro_offset_ [0] = 0.0;
-    gyro_offset_ [1] = 0.0;
-    gyro_offset_ [2] = 0.0;
-    ax_mid_ = 0.0;
-    ay_mid_ = 0.0;
-    az_mid_ = 0.0;
+    gx_off_ = 0.0;
+    gy_off_ = 0.0;
+    gz_off_ = 0.0;
+    ax_off_ = 0.0;
+    ay_off_ = 0.0;
+    az_off_ = 0.0;
+    mx_off_ = 0.0;
+    my_off_ = 0.0;
+    mz_off_ = 0.0;
     ax_sen_ = 1.0;
     ay_sen_ = 1.0;
     az_sen_ = 1.0;
+    mx_sen_ = 1.0;
+    my_sen_ = 1.0;
+    mz_sen_ = 1.0;
 
     // Create a file to store the row data
     row_data_file_ = fopen("row_data.txt", "w");
     printf("Start storing the data in the file \"row_data.txt\"\n");
 
-    getTime(); // Initialize time variables the current time 
+    getTime(); // Initialize time variables the current time
     fprintf(row_data_file_, "Row data started in the following order:\n"
             "time, gx, gy, gz, ax, ay, az, mx, my, mz, temp, pres;\n");
-    
+
     notes_file_ = fopen("info.txt","w");
     printf("Start storing the notes in the file \"info.txt\"\n");
 }
@@ -94,11 +100,11 @@ bool Sensors::createBarometer() {
 void Sensors::updateAll() {
     // Read measurements from the imu sensor
     updateIMU();
-    
+
     // Read measurements from the barometer sensor
     updateBarometer();
-        
-    // Store the row data 
+
+    // Store the row data
     storeData();
 }
 
@@ -113,16 +119,16 @@ void Sensors::gyroCalibrate() {
     float offset[3] ={0.0 ,0.0 ,0.0};    // use temp values to not change the gyro_offset variables
     for (int i = 0; i < int(maxCount); i++) {
         updateIMU();
-        offset[0] -= gx_;
-        offset[1] -= gy_;
-        offset[2] -= gz_;
+        offset[0] = gx_;
+        offset[1] = gy_;
+        offset[2] = gz_;
         usleep(10000);
     }
-    gyro_offset_[0] = offset[0] / maxCount;
-    gyro_offset_[1] = offset[1] / maxCount;
-    gyro_offset_[2] = offset[2] / maxCount;
+    gx_off_ = offset[0] / maxCount;
+    gy_off_ = offset[1] / maxCount;
+    gz_off_ = offset[2] / maxCount;
 
-    printf("Gyro offsets are: %f %f %f\n", gyro_offset_[0], gyro_offset_[1], gyro_offset_[2]);
+    printf("Gyro offsets are: %f %f %f\n", gx_off_, gy_off_, gz_off_);
     storeInfo();
 }
 //******************************************************************************
@@ -131,25 +137,33 @@ void Sensors::gyroCalibrate() {
 
 bool Sensors::accReadCalibration(char *file_name){
 
-    char str1[5], str2[5];
-   
+    char str1[8], str2[8];
+
     if( access( file_name, F_OK ) != -1 ) {
         // file exists
         printf ("Oppening file %s\n",file_name);
-  
+
         FILE* file = fopen(file_name,"r");
 
-      
-        fscanf(file,"%s %f %f %f\n", str1, &ax_mid_ , &ay_mid_, &az_mid_);
-        fscanf(file,"%s %f %f %f\n", str2, &ax_sen_ , &ay_sen_, &az_sen_);        
-  
-        printf("%5s values for x-axis: %+5.5f  z-axis: %+5.5f  z-axis: %+5.5f\n",
-                str1, ax_mid_, ay_mid_, az_mid_);
-        printf("%5s values for x-axis: %+5.5f  z-axis: %+5.5f  z-axis: %+5.5f\n",
+
+        fscanf(file,"%s %f %f %f\n", str1, &ax_off_ , &ay_off_, &az_off_);
+        fscanf(file,"%s %f %f %f\n", str2, &ax_sen_ , &ay_sen_, &az_sen_);
+
+        printf("%5s values for x-axis: %+10.5f y-axis: %+10.5f z-axis: %+10.5f\n",
+                str1, ax_off_, ay_off_, az_off_);
+        printf("%5s values for x-axis: %+10.5f y-axis: %+10.5f z-axis: %+10.5f\n",
                 str2, ax_sen_, ay_sen_, az_sen_);
 
+        fscanf(file,"%s %f %f %f\n", str1, &mx_off_ , &my_off_, &mz_off_);
+        fscanf(file,"%s %f %f %f\n", str2, &mx_sen_ , &my_sen_, &mz_sen_);
+
+        printf("%5s values for x-axis: %+10.5f y-axis: %+10.5f z-axis: %+10.5f\n",
+                str1, mx_off_, my_off_, mz_off_);
+        printf("%5s values for x-axis: %+10.5f y-axis: %+10.5f z-axis: %+10.5f\n",
+                str2, mx_sen_, my_sen_, mz_sen_);
+
         fclose(file);
-    
+
 	return 1;
     } else {
         // file doesn't exist
@@ -158,7 +172,7 @@ bool Sensors::accReadCalibration(char *file_name){
     }
 }
 //**************************************************************************
-// Read imu sensor 
+// Read imu sensor
 //**************************************************************************
 
 void Sensors::updateIMU() {
@@ -166,7 +180,7 @@ void Sensors::updateIMU() {
     imu_->update();
     imu_->read_gyroscope(&gx_, &gy_, &gz_);
     imu_->read_accelerometer(&ax_, &ay_, &az_);
-    imu_->read_magnetometer(&mx_, &my_, &mz_);   
+    imu_->read_magnetometer(&mx_, &my_, &mz_);
 
     // rotate axis
     float tempax = ax_;
@@ -179,26 +193,31 @@ void Sensors::updateIMU() {
     mx_ = -my_;
     my_ = -tempmx;
 
-    // Scale raw measurements 
+    // Scale raw measurements
     ax_ /= G_SI;
     ay_ /= G_SI;
     az_ /= G_SI;
-    
+
     // Apply calibration offset
-    gx_ -= gyro_offset_[0];
-    gy_ -= gyro_offset_[1];
-    gz_ -= gyro_offset_[2]; 
+    gx_ = gx_ - gx_off_;
+    gy_ = gy_ - gy_off_;
+    gz_ = gz_ - gz_off_;
 
     // Apply calibration on accelerometer
-    ax_ = (ax_ + ax_mid_)/ax_sen_;
-    ay_ = (ay_ + ay_mid_)/ay_sen_;
-    az_ = (az_ + az_mid_)/az_sen_;
-    
-   // Store data
+    ax_ = (ax_ - ax_off_)/ax_sen_;
+    ay_ = (ay_ - ay_off_)/ay_sen_;
+    az_ = (az_ - az_off_)/az_sen_;
+
+   // Apply calibration on accelerometer
+    mx_ = (mx_ - mx_off_)/mx_sen_;
+    my_ = (my_ - my_off_)/my_sen_;
+    mz_ = (mz_ - mz_off_)/mz_sen_;
+
+   // Store data_
    storeData();
 }
 //**************************************************************************
-// Read Barometer sensor 
+// Read Barometer sensor
 //**************************************************************************
 
 void Sensors::updateBarometer() {
@@ -216,8 +235,11 @@ void Sensors::storeData() {
     // get current time stamp
     getTime();
     // Write data
-    fprintf(row_data_file_, "%10ul, %+10.5f, %+10.5f, %+10.5f, %+10.5f, %+10.5f, %+10.5f,"
-            " %+10.5f, %+10.5f, %+10.5f, %+10.5f, %+10.5f;\n",
+    fprintf(row_data_file_, "%10ul, "
+            "%+10.5f, %+10.5f, %+10.5f, "
+            "%+10.5f, %+10.5f, %+10.5f, "
+            "%+10.5f, %+10.5f, %+10.5f, "
+            "%+10.5f, %+10.5f;\n",
             time_now_,
             gx_, gy_, gz_,
             ax_, ay_, az_,
@@ -225,14 +247,14 @@ void Sensors::storeData() {
             temp_, pres_);
 }
 //**************************************************************************
-// Get the current time 
+// Get the current time
 //**************************************************************************
 
 void Sensors::getTime() {
     // Timing data
     struct timeval tv;
 
-    // Calculate delta time 
+    // Calculate delta time
     gettimeofday(&tv, NULL);
     time_now_ = 1000000 * tv.tv_sec + tv.tv_usec;
 }
@@ -245,8 +267,18 @@ void Sensors::storeInfo() {
     // get current time stamp
     getTime();
     // Write data
-    fprintf(notes_file_, "info gyro offset: %10u,l %5.5f, %5.5f, %5.5f;\n",
-            time_now_, gyro_offset_[0], gyro_offset_[1], gyro_offset_[2]);
+    fprintf(notes_file_, "storing information at time %10ul\n",
+            time_now_);
+    fprintf(notes_file_, "gyr_off %+10.5f, %+10.5f, %+10.5f;\n",
+            gx_off_, gy_off_, gz_off_);
+    fprintf(notes_file_, "acc_off %+10.5f, %+10.5f, %+10.5f;\n",
+            ax_off_, ay_off_, az_off_);
+    fprintf(notes_file_, "acc_sen %+10.5f, %+10.5f, %+10.5f;\n",
+            ax_sen_, ay_sen_, az_sen_);
+    fprintf(notes_file_, "mag_off %+10.5f, %+10.5f, %+10.5f;\n",
+            mx_off_, my_off_, mz_off_);
+    fprintf(notes_file_, "mag_sen %+10.5f, %+10.5f, %+10.5f;\n",
+            mx_sen_, my_sen_, mz_sen_);
 }
 
 //**************************************************************************
@@ -257,8 +289,11 @@ void Sensors::displayData() {
     // get current time stamp
     getTime();
     // Write data
-    printf("time: %10ul, gx=%5.5f, gy=%5.5f, gz=%5.5f, ax=%5.5f, ay=%5.5f, az=%5.5f,"
-            " mx=%5.5f, my=%5.5f, mz=%5.5f, temperature=%5.5f, pressure=%5.5f;\n",
+    printf("time: %10ul, "
+           "gx=%10.5f, gy=%10.5f, gz=%10.5f, "
+           "ax=%10.5f, ay=%10.5f, az=%10.5f, "
+           "mx=%10.5f, my=%10.5f, mz=%10.5f, "
+           "temperature=%10.5f, pressure=%10.5f;\n",
             time_now_,
             gx_, gy_, gz_,
             ax_, ay_, az_,

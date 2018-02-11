@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   Sensors.h
  * Author: Bara Emran
  *
@@ -16,7 +16,7 @@
 // Navio2 libraries
 #include "Navio/Common/MPU9250.h" // IMU mpu chip
 #include "Navio/Navio2/LSM9DS1.h" // IMU lsm chip
-#include "Navio/Common/Util.h"  
+#include "Navio/Common/Util.h"
 #include "Navio/Common/MS5611.h" // Pressure And temperature chip
 
 // Global defined variables
@@ -25,21 +25,23 @@
 
 class Sensors {
 public:
-    
+
     // Sensors data
     float ax_, ay_, az_;    // Gyro
     float gx_, gy_, gz_;    // Accelerometer
     float mx_, my_, mz_;    // Magnetometer
-    float gyro_offset_[3];  // offset data of gyro sensor
-    float ax_mid_, ay_mid_, az_mid_;
-    float ax_sen_, ay_sen_, az_sen_; 
+    float gx_off_, gy_off_, gz_off_;  // offset data of gyro sensor
+    float ax_off_, ay_off_, az_off_;  // offset data of accelerometer sensor
+    float mx_off_, my_off_, mz_off_;  // offset data of magenetometer sensor
+    float ax_sen_, ay_sen_, az_sen_;  // sensetivity data of acceleromter sensor
+    float mx_sen_, my_sen_, mz_sen_;  // sensetivity data of magenetometer sensor
     float temp_;            // Temperature
     float pres_;            // Pressure
 
     // Objects
     InertialSensor *imu_;    // IMU sensor
-    MS5611 *barometer_;       // Barometer sensor
-    FILE * row_data_file_;   // File to store row data 
+    MS5611 *barometer_;      // Barometer sensor
+    FILE * row_data_file_;   // File to store row data
     FILE * notes_file_;      // File to store notes
     // Checking variables
     bool IsIMUEnabled;
