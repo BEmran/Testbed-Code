@@ -27,7 +27,7 @@ void AHRS::update( float dt, float gx, float gy, float gz, float ax, float ay, f
 
     // Compute feedback only if accelerometer measurement valid
     if(!((ax == 0.0f) && (ay == 0.0f) && (az == 0.0f))) {
-		
+
          // Auxiliary variables to avoid repeated arithmetic
         q0q0 = q0 * q0;
         q0q1 = q0 * q1;
@@ -39,20 +39,20 @@ void AHRS::update( float dt, float gx, float gy, float gz, float ax, float ay, f
         q2q2 = q2 * q2;
         q2q3 = q2 * q3;
         q3q3 = q3 * q3;
-		
+
         // Normalise accelerometer measurement
         recipNorm = invSqrt(ax * ax + ay * ay + az * az);
         ax *= recipNorm;
         ay *= recipNorm;
         az *= recipNorm;
-		
+
 		if (is_mag == true){
         // Normalise magnetometer measurement
         recipNorm = invSqrt(mx * mx + my * my + mz * mz);
         mx *= recipNorm;
         my *= recipNorm;
         mz *= recipNorm;
-		
+
         // Reference direction of Earth's magnetic field
         hx = 2.0f * (mx * (0.5f - q2q2 - q3q3) + my * (q1q2 - q0q3) + mz * (q1q3 + q0q2));
         hy = 2.0f * (mx * (q1q2 + q0q3) + my * (0.5f - q1q1 - q3q3) + mz * (q2q3 - q0q1));
@@ -62,7 +62,7 @@ void AHRS::update( float dt, float gx, float gy, float gz, float ax, float ay, f
 	     // Estimated direction of gravity and magnetic field
         halfvx = q1q3 - q0q2;
         halfvy = q0q1 + q2q3;
-        halfvz = q0q0 - 0.5f + q3q3;	
+        halfvz = q0q0 - 0.5f + q3q3;
         halfwx = bx * (0.5f - q2q2 - q3q3) + bz * (q1q3 - q0q2);
         halfwy = bx * (q1q2 - q0q3) + bz * (q0q1 + q2q3);
         halfwz = bx * (q0q2 + q1q3) + bz * (0.5f - q1q1 - q2q2);
@@ -71,19 +71,19 @@ void AHRS::update( float dt, float gx, float gy, float gz, float ax, float ay, f
         halfex = (ay * halfvz - az * halfvy) + (my * halfwz - mz * halfwy);
         halfey = (az * halfvx - ax * halfvz) + (mz * halfwx - mx * halfwz);
         halfez = (ax * halfvy - ay * halfvx) + (mx * halfwy - my * halfwx);
-		
-		} else{
+
+	} else{
 	     // Estimated direction of gravity and magnetic field
         halfvx = q1q3 - q0q2;
         halfvy = q0q1 + q2q3;
-        halfvz = q0q0 - 0.5f + q3q3;	
+        halfvz = q0q0 - 0.5f + q3q3;
 
         // Error is sum of cross product between estimated and measured direction of gravity
         halfex = (ay * halfvz - az * halfvy);
         halfey = (az * halfvx - ax * halfvz);
         halfez = (ax * halfvy - ay * halfvx);
 		}
-		
+
         // Compute and apply integral feedback if enabled
         if(twoKi > 0.0f) {
             integralFBx += twoKi * halfex * dt;	// integral error scaled by Ki
@@ -92,8 +92,7 @@ void AHRS::update( float dt, float gx, float gy, float gz, float ax, float ay, f
             gx += integralFBx;	// apply integral feedback
             gy += integralFBy;
             gz += integralFBz;
-        }
-        else {
+        } else {
             integralFBx = 0.0f;	// prevent integral windup
             integralFBy = 0.0f;
             integralFBz = 0.0f;

@@ -22,6 +22,8 @@
 // Global defined variables
 #define G_SI 9.80665
 #define PI   3.14159
+#define MPU  1
+#define LSM  2
 
 class Sensors {
 public:
@@ -46,7 +48,7 @@ public:
     // Checking variables
     bool IsIMUEnabled;
     bool IsIMUCalibrated;
-    
+
     // Public methods
     Sensors();
     ~Sensors();
@@ -57,12 +59,13 @@ public:
     void updateBarometer();
     void gyroCalibrate();
     void displayData();
-    bool accReadCalibration(char *file_name);
+    bool ReadCalibration(char *file_name);
 
 private:
     // Row sensor data
     long unsigned time_now_;
-    
+    int imu_type_;
+
     // Private methods
     void getTime();
     void storeData();

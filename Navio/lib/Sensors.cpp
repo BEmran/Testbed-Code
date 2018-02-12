@@ -13,23 +13,14 @@
 Sensors::Sensors() {
     // Initialize default values
     imu_ = NULL;
+    imu_type_ = 0;
     IsIMUEnabled = false;
     IsIMUCalibrated = false;
-    gx_off_ = 0.0;
-    gy_off_ = 0.0;
-    gz_off_ = 0.0;
-    ax_off_ = 0.0;
-    ay_off_ = 0.0;
-    az_off_ = 0.0;
-    mx_off_ = 0.0;
-    my_off_ = 0.0;
-    mz_off_ = 0.0;
-    ax_sen_ = 1.0;
-    ay_sen_ = 1.0;
-    az_sen_ = 1.0;
-    mx_sen_ = 1.0;
-    my_sen_ = 1.0;
-    mz_sen_ = 1.0;
+    gx_off_ = 0.0; gy_off_ = 0.0; gz_off_ = 0.0;
+    ax_off_ = 0.0; ay_off_ = 0.0; az_off_ = 0.0;
+    mx_off_ = 0.0; my_off_ = 0.0; mz_off_ = 0.0;
+    ax_sen_ = 1.0; ay_sen_ = 1.0; az_sen_ = 1.0;
+    mx_sen_ = 1.0; my_sen_ = 1.0; mz_sen_ = 1.0;
 
     // Create a file to store the row data
     row_data_file_ = fopen("row_data.txt", "w");
@@ -59,9 +50,11 @@ bool Sensors::createIMU(char *sensor_name) {
     if (!strcmp(sensor_name, "mpu")) {
         printf("Create IMU sensor as MPU9250\n");
         imu_ = new MPU9250();
+        imu_type_ = MPU;
     } else if (!strcmp(sensor_name, "lsm")) {
         printf("Create IMU sensor as LSM9DS1\n");
         imu_ = new LSM9DS1();
+	imu_type_ = LSM;
     } else {
         printf("Undefined sensor name.\n"
                 "No IMU sensor was created.\n"
@@ -119,10 +112,10 @@ void Sensors::gyroCalibrate() {
     float offset[3] ={0.0 ,0.0 ,0.0};    // use temp values to not change the gyro_offset variables
     for (int i = 0; i < int(maxCount); i++) {
         updateIMU();
-        offset[0] = gx_;
-        offset[1] = gy_;
-        offset[2] = gz_;
-        usleep(10000);
+        offset[0] += gx_;
+        offset[1] += gy_;
+        offset[2] += gz_;
+        usleep(2500); 	// 400 Hz
     }
     gx_off_ = offset[0] / maxCount;
     gy_off_ = offset[1] / maxCount;
@@ -135,7 +128,7 @@ void Sensors::gyroCalibrate() {
 // Read acceleromter calibration value from a specific file
 //******************************************************************************
 
-bool Sensors::accReadCalibration(char *file_name){
+bool Sensors::ReadCalibration(char *file_name){
 
     char str1[8], str2[8];
 
@@ -183,14 +176,14 @@ void Sensors::updateIMU() {
     imu_->read_magnetometer(&mx_, &my_, &mz_);
 
     // rotate axis
-    float tempax = ax_;
-    ax_ = -ay_;
-    ay_ = -tempax;
     float tempgx = gx_;
-    gx_ = -gy_;
-    gy_ = -tempgx;
+    float tempax = ax_;
     float tempmx = mx_;
+    gx_ = -gy_;
+    ax_ = -ay_;
     mx_ = -my_;
+    gy_ = -tempgx;
+    ay_ = -tempax;
     my_ = -tempmx;
 
     // Scale raw measurements
@@ -290,10 +283,10 @@ void Sensors::displayData() {
     getTime();
     // Write data
     printf("time: %10ul, "
-           "gx=%10.5f, gy=%10.5f, gz=%10.5f, "
-           "ax=%10.5f, ay=%10.5f, az=%10.5f, "
-           "mx=%10.5f, my=%10.5f, mz=%10.5f, "
-           "temperature=%10.5f, pressure=%10.5f;\n",
+           "gx= %+10.5f, gy= %+10.5f, gz= %+10.5f, "
+           "ax= %+10.5f, ay= %+10.5f, az= %+10.5f, "
+           "mx= %+10.5f, my= %+10.5f, mz= %+10.5f, "
+           "temperature= %+10.5f, pressure= %+10.5f;\n",
             time_now_,
             gx_, gy_, gz_,
             ax_, ay_, az_,

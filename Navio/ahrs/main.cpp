@@ -29,7 +29,7 @@ void print_help() {
 int main(int argc, char *argv[]) {
     int parameter;
     char *sensor_name;
-    char *acc_calib_file_name;
+    char *calib_file_name;
     // Check if APM is busy: return false if free
     if (check_apm()) {
         return 1;
@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
             case '?': printf("Wrong parameter.\n");
                 print_help();
                 return 0;
-	    case 'a': acc_calib_file_name = optarg;
+	    case 'a': calib_file_name = optarg;
                 break;
         }
     }
@@ -68,7 +68,7 @@ int main(int argc, char *argv[]) {
     sensors->gyroCalibrate();
     // Read accelormeter Calibrartion
     //sensors->accReadCalibration("../calibration/acc_calib.txt");
-    sensors->accReadCalibration(acc_calib_file_name);
+    sensors->ReadCalibration(calib_file_name);
 
     AHRS ahrs;
 
@@ -85,8 +85,10 @@ int main(int argc, char *argv[]) {
 
         ahrs.update(dt,
              sensors->gx_, sensors->gy_, sensors->gz_,
-             sensors->ax_, sensors->ay_, sensors->az_,
-             sensors->mx_, sensors->my_, sensors->mz_);
+             sensors->ax_, sensors->ay_, sensors->az_);
+            // sensors->mx_, sensors->my_, sensors->mz_);
+
+            ahrs.getEuler(&roll,&pitch,&yaw);
 
         //------------- Console and network output with a lowered rate ------------
         dtsumm += dt;
@@ -98,9 +100,8 @@ int main(int argc, char *argv[]) {
             //        sensors->gx_, sensors->gy_, sensors->gz_,
             //        sensors->ax_, sensors->ay_, sensors->az_,
             //        sensors->mx_, sensors->my_, sensors->mz_);
-        
-            ahrs.getEuler(&roll,&pitch,&yaw);
-            printf("%d %+10.5f %+10.5f %+10.5f \n",int(1 / dt),roll, pitch, yaw);
+
+            printf("%d %+4.1f %+4.1f %+4.1f \n",int(1 / dt),roll, pitch, yaw);
 
          }
     }
